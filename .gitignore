@@ -1,0 +1,6 @@
+# Ignorar .o
+*.o
+# Ignorar programa ja compilado
+programa
+# Ignorar pasta .vscode
+.vscode

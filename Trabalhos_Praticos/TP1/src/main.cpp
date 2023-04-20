@@ -4,7 +4,12 @@
 
 int main(){
     Resolvedor *r = new Resolvedor();
-    r->lerExpressao("2 + ( 3 x 4 ) + 5");
+    r->lerExpressao("2 + 4 / 2 + 8 / 4");
+    r->imprimirExpressao();
+    r->convertePosfixa();
+    r->imprimirExpressao();
+
+    r->converteInfixa();
     r->imprimirExpressao();
 
     delete r;

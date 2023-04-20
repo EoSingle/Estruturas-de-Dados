@@ -1,3 +1,7 @@
+// TODO: Adicionar suporte a float
+// TODO: Fazer a função de resolver a expressão
+
+
 #include "resolvedor.hpp"
 
 // Inicializa a expressão com uma pilha vazia
@@ -11,6 +15,8 @@ Resolvedor::~Resolvedor(){
 }
 
 // Lê uma expressão e a armazena em uma pilha
+// A expressão é armazenada na forma posfixa
+// Expressões validas são compostas por números, espaços, parênteses e operadores (+, -, x, /)
 void Resolvedor::lerExpressao(std::string expressao){
     // Limpa a expressão
     this->expressao->Limpa();
@@ -54,8 +60,48 @@ void Resolvedor::lerExpressao(std::string expressao){
     delete aux;
 }
 
-// Converte uma expressão posfixa para uma expressão infixa || Errado
+// Converte uma expressão posfixa para uma expressão infixa
 void Resolvedor::converteInfixa(){
+    PilhaEncadeada *aux = new PilhaEncadeada();
+    PilhaEncadeada *aux2 = new PilhaEncadeada();
+
+    // Percorre toda a expressão
+    while(!this->expressao->Vazia()){
+        // Se o item for um número, empilha na pilha auxiliar
+        if(this->expressao->GetTopo() >= "0" && this->expressao->GetTopo() <= "9"){
+            aux->Empilha(this->expressao->GetTopo());
+        }
+        // Se o item for um operador, desempilha os dois últimos itens da pilha auxiliar e os coloca entre parênteses
+        else if(this->expressao->GetTopo() == "+" || this->expressao->GetTopo() == "-" || this->expressao->GetTopo() == "x" || this->expressao->GetTopo() == "/"){
+            std::string aux3 = "";
+            aux3 += "(";
+            aux3 += aux->Desempilha();
+            aux3 += this->expressao->GetTopo();
+            aux3 += aux->Desempilha();
+            aux3 += ")";
+            aux->Empilha(aux3);
+        }
+        this->expressao->Desempilha();
+    }
+
+    // Inverte a expressão e a armazena na expressão
+    while(!aux->Vazia()){
+        int len = aux->GetTopo().length();
+        for(int i = 0 ; i < len; i++){
+            std::string aux4 = "";
+            aux4 += aux->GetTopo()[i];
+            aux2->Empilha(aux4);
+        }
+        aux->Desempilha();
+    }
+
+    while(!aux2->Vazia()){
+        this->expressao->Empilha(aux2->Desempilha());
+    }
+
+    // Deleta as pilhas auxiliares
+    delete aux;
+    delete aux2;
     
 }
 
@@ -69,8 +115,19 @@ void Resolvedor::convertePosfixa(){
         if(this->expressao->GetTopo() >= "0" && this->expressao->GetTopo() <= "9"){
             output->Empilha(this->expressao->GetTopo());
         }
-        // Se o item for um operador, empilha na pilha operadores
-        else if(this->expressao->GetTopo() == "+" || this->expressao->GetTopo() == "-" || this->expressao->GetTopo() == "x" || this->expressao->GetTopo() == "/"){
+        // Se o item for '+' ou '-' e o topo da pilha de operadores tiver prioridade maior ou igual, desempilha o operador e o coloca na pilha operandos
+        else if(this->expressao->GetTopo() == "+" || this->expressao->GetTopo() == "-"){
+            while(!operadores->Vazia() && operadores->GetTopo() != "("){
+                output->Empilha(operadores->Desempilha());
+            }
+            operadores->Empilha(this->expressao->GetTopo());
+            
+        }
+        // Se o item for 'x' ou '/' e o topo da pilha de operadores tiver prioridade igual, desempilha o operador e o coloca na pilha operandos
+        else if(this->expressao->GetTopo() == "x" || this->expressao->GetTopo() == "/"){
+            while(!operadores->Vazia() && (operadores->GetTopo() == "x" || operadores->GetTopo() == "/")){
+                output->Empilha(operadores->Desempilha());
+            }
             operadores->Empilha(this->expressao->GetTopo());
         }
         // Se o item for um parenteses esquerdo, empilha na pilha operadores
