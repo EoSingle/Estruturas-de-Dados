@@ -84,5 +84,43 @@ void Resolvedor::convertePosfixa(){
 
 // Resolve a expressão
 void Resolvedor::resolverExpressao(){
+    this->resultado = new PilhaFloat();
+    this->resolveRecursivo(this->arvore->raiz);
+    std::cout << this->resultado->GetTopo() << std::endl;
+}
 
+// Resolve a expressão recursivamente
+void Resolvedor::resolveRecursivo(TipoNo* p){
+
+    if(p != nullptr){
+        // Resolve a expressão recursivamente
+        this->resolveRecursivo(p->esq);
+        this->resolveRecursivo(p->dir);
+        // Verifica se o nó é um operador
+        if(p->item == "+" || p->item == "-" || p->item == "*" || p->item == "/"){
+            // Desempilha os dois últimos operandos e empilha o resultado da operação
+            float x1 = this->resultado->Desempilha();
+            float x2 = this->resultado->Desempilha();
+            if(p->item == "+"){
+               this->resultado->Empilha(x2 + x1);
+            }
+            else if(p->item == "-"){
+                this->resultado->Empilha(x2 - x1);
+            }
+            else if(p->item == "*"){
+                this->resultado->Empilha(x2 * x1);
+            }
+            else if(p->item == "/"){
+                if(x1 != 0)
+                    this->resultado->Empilha(x2 / x1);
+                else
+                    std::cout << "Divisão por 0" << std::endl;
+            }
+        }
+        // Verifica se o nó é um operando
+        else if(p->item >= "0" || p->item <= "9.999"){
+            // Insere o operando na pilha
+            this->resultado->Empilha(std::stof(p->item));
+        }
+    }
 }

@@ -2,6 +2,7 @@
 
 #include "arvore.hpp"
 #include "pilhaEncadeada.hpp"
+#include "pilhafloat.hpp"
 #include <string>
 #include <iostream>
 
@@ -9,6 +10,7 @@ class Resolvedor {
     private:
         ArvoreBinaria *arvore;
         int tipoExpressao;
+        PilhaFloat *resultado;
 
     public:
         Resolvedor();
@@ -18,5 +20,6 @@ class Resolvedor {
         void converteInfixa();
         void convertePosfixa();
         void resolverExpressao();
+        void resolveRecursivo(TipoNo* p);
 
 }; 

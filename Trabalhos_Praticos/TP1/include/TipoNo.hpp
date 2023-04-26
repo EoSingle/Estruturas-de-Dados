@@ -16,4 +16,5 @@ class TipoNo
 
     friend class ArvoreBinaria;
     friend class PilhaEncadeada;
+    friend class Resolvedor;
 };

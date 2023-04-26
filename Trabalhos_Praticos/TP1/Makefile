@@ -27,10 +27,19 @@ ${OBJ_DIR}/pilha.o: ${OBJ_DIR}/tipono.o
 ${OBJ_DIR}/pilhaencadeada.o: ${OBJ_DIR}/node.o ${OBJ_DIR}/pilha.o
 	${CC} ${CFLAGS} -I${INCLUDE_DIR} -c ${SRC_DIR}/pilhaEncadeada.cpp -o ${OBJ_DIR}/pilhaencadeada.o
 
+${OBJ_DIR}/nodef.o:
+	${CC} ${CFLAGS} -I${INCLUDE_DIR} -c ${SRC_DIR}/nodef.cpp -o ${OBJ_DIR}/nodef.o
+
+${OBJ_DIR}/pilhaf.o:
+	${CC} ${CFLAGS} -I${INCLUDE_DIR} -c ${SRC_DIR}/pilhaf.cpp -o ${OBJ_DIR}/pilhaf.o
+
+${OBJ_DIR}/pilhafloat.o: ${OBJ_DIR}/nodef.o ${OBJ_DIR}/pilhaf.o
+	${CC} ${CFLAGS} -I${INCLUDE_DIR} -c ${SRC_DIR}/pilhafloat.cpp -o ${OBJ_DIR}/pilhafloat.o
+
 ${OBJ_DIR}/arvore.o: ${OBJ_DIR}/tipono.o ${OBJ_DIR}/node.o ${OBJ_DIR}/pilhaencadeada.o
 	${CC} ${CFLAGS} -I${INCLUDE_DIR} -c ${SRC_DIR}/arvore.cpp -o ${OBJ_DIR}/arvore.o
 
-${OBJ_DIR}/resolvedor.o: ${OBJ_DIR}/pilhaencadeada.o ${OBJ_DIR}/arvore.o
+${OBJ_DIR}/resolvedor.o: ${OBJ_DIR}/pilhaencadeada.o ${OBJ_DIR}/arvore.o ${OBJ_DIR}/pilhafloat.o
 	${CC} ${CFLAGS} -I${INCLUDE_DIR} -c ${SRC_DIR}/resolvedor.cpp -o ${OBJ_DIR}/resolvedor.o
 
 clean:
