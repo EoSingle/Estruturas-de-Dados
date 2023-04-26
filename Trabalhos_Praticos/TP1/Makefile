@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-Wall
+CFLAGS=-Wall -g
 TARGET=programa
 
 BIN_DIR    = ./bin
@@ -12,19 +12,25 @@ all: ${BIN_DIR}/${TARGET}
 ${BIN_DIR}/${TARGET}: ${OBJ_DIR}/main.o
 	${CC} ${CFLAGS} -o ${BIN_DIR}/${TARGET} ${OBJ_DIR}/*.o
 
-${OBJ_DIR}/main.o: ${OBJ_DIR}/node.o ${OBJ_DIR}/pilha.o ${OBJ_DIR}/pilhaencadeada.o ${OBJ_DIR}/resolvedor.o
+${OBJ_DIR}/main.o: ${OBJ_DIR}/tipono.o ${OBJ_DIR}/node.o ${OBJ_DIR}/pilha.o ${OBJ_DIR}/pilhaencadeada.o ${OBJ_DIR}/arvore.o ${OBJ_DIR}/resolvedor.o
 	${CC} ${CFLAGS} -I${INCLUDE_DIR} -c ${SRC_DIR}/main.cpp -o ${OBJ_DIR}/main.o
 	
-${OBJ_DIR}/node.o: 
+${OBJ_DIR}/tipono.o:
+	${CC} ${CFLAGS} -I${INCLUDE_DIR} -c ${SRC_DIR}/TipoNo.cpp -o ${OBJ_DIR}/tipono.o
+
+${OBJ_DIR}/node.o: ${OBJ_DIR}/tipono.o
 	${CC} ${CFLAGS} -I${INCLUDE_DIR} -c ${SRC_DIR}/node.cpp -o ${OBJ_DIR}/node.o
 
-${OBJ_DIR}/pilha.o:
+${OBJ_DIR}/pilha.o: ${OBJ_DIR}/tipono.o
 	${CC} ${CFLAGS} -I${INCLUDE_DIR} -c ${SRC_DIR}/pilha.cpp -o ${OBJ_DIR}/pilha.o
 
 ${OBJ_DIR}/pilhaencadeada.o: ${OBJ_DIR}/node.o ${OBJ_DIR}/pilha.o
 	${CC} ${CFLAGS} -I${INCLUDE_DIR} -c ${SRC_DIR}/pilhaEncadeada.cpp -o ${OBJ_DIR}/pilhaencadeada.o
 
-${OBJ_DIR}/resolvedor.o: ${OBJ_DIR}/pilhaencadeada.o
+${OBJ_DIR}/arvore.o: ${OBJ_DIR}/tipono.o ${OBJ_DIR}/node.o ${OBJ_DIR}/pilhaencadeada.o
+	${CC} ${CFLAGS} -I${INCLUDE_DIR} -c ${SRC_DIR}/arvore.cpp -o ${OBJ_DIR}/arvore.o
+
+${OBJ_DIR}/resolvedor.o: ${OBJ_DIR}/pilhaencadeada.o ${OBJ_DIR}/arvore.o
 	${CC} ${CFLAGS} -I${INCLUDE_DIR} -c ${SRC_DIR}/resolvedor.cpp -o ${OBJ_DIR}/resolvedor.o
 
 clean:
@@ -33,3 +39,5 @@ clean:
 
 run: all 
 	${BIN_DIR}/${TARGET}
+
+teste: clean run

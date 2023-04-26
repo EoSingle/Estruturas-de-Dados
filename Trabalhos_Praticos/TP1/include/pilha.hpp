@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "TipoNo.hpp"
 
 class Pilha {
     public:
@@ -8,8 +9,8 @@ class Pilha {
         int GetTamanho();
         bool Vazia();
 
-        virtual void Empilha(std::string item) = 0;
-        virtual std::string Desempilha() = 0;
+        virtual void Empilha(TipoNo* item) = 0;
+        virtual TipoNo* Desempilha() = 0;
         virtual void Limpa() = 0;
 
         protected:

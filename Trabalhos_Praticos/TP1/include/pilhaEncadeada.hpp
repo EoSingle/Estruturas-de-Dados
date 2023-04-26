@@ -2,6 +2,7 @@
 
 #include "pilha.hpp"
 #include "node.hpp"
+#include "TipoNo.hpp"
 #include <string>
 
 
@@ -11,9 +12,9 @@ class PilhaEncadeada : public Pilha {
     public:
         PilhaEncadeada();
         virtual ~PilhaEncadeada();
-        void Empilha(std::string item);
-        std::string Desempilha();
-        void Limpa();
+        void Empilha(TipoNo *item) override;
+        TipoNo* Desempilha() override;
+        void Limpa() override;
 
-        std::string GetTopo();
+        TipoNo* GetTopo();
 };

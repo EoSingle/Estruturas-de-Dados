@@ -11,7 +11,7 @@ PilhaEncadeada::~PilhaEncadeada(){
 }
 
 // Insere um item no topo da pilha
-void PilhaEncadeada::Empilha(std::string item){
+void PilhaEncadeada::Empilha(TipoNo* item){
     node* novo = new node();       // Cria um novo nó
     novo->item = item;             // Atribui o item ao nó
     novo->proximo = this->topo;    // O próximo do novo nó aponta para o topo
@@ -21,15 +21,15 @@ void PilhaEncadeada::Empilha(std::string item){
 
 // Remove o item do topo da pilha
 // Retorna o item removido
-std::string PilhaEncadeada::Desempilha(){
+TipoNo* PilhaEncadeada::Desempilha(){
     // Testa se a pilha está vazia
     if(this->Vazia()){
-        return "";
+        return nullptr;
     }
 
     node* aux = this->topo;            // aux aponta para o topo
     this->topo = this->topo->proximo;  // topo aponta para o próximo
-    std::string item = aux->item;      // item recebe o item do nó
+    TipoNo* item = aux->item;          // item recebe o item do nó
     delete aux;                        // deleta o nó
     this->tamanho--;                   // decrementa o tamanho da pilha
 
@@ -46,10 +46,10 @@ void PilhaEncadeada::Limpa(){
 }
 
 // Retorna o item do topo da pilha
-std::string PilhaEncadeada::GetTopo(){
+TipoNo* PilhaEncadeada::GetTopo(){
     // Testa se a pilha está vazia
     if(this->Vazia()){
-        return "";
+        return nullptr;
     }
 
     // Retorna o item do topo

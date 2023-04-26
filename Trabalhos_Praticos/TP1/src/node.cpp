@@ -2,7 +2,7 @@
 
 // Inicializa o nó com item vazio e próximo igual a nullptr
 node::node(){
-    this->item = "";
+    this->item = nullptr;
     this->proximo = nullptr;
 }
 

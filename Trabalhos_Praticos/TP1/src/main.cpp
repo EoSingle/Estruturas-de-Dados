@@ -4,13 +4,10 @@
 
 int main(){
     Resolvedor *r = new Resolvedor();
-    r->lerExpressao("2 + 4 / 2 + 8 / 4");
-    r->imprimirExpressao();
-    r->convertePosfixa();
-    r->imprimirExpressao();
-
+    r->lerExpressao("4.721663  6.714296  +  0.838888  +  4.205877  4.278166  +  *  4.863587  2.466270  *  / ");
     r->converteInfixa();
-    r->imprimirExpressao();
+    r->convertePosfixa();
+    r->resolverExpressao();
 
     delete r;
     

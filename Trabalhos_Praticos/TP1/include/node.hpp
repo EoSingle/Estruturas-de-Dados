@@ -1,10 +1,10 @@
 #pragma once
 
-#include <string>
+#include "TipoNo.hpp"
 
 class node {
     private:
-        std::string item;
+        TipoNo* item;
         node* proximo;
     public:
         node();
