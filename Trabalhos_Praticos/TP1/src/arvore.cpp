@@ -174,3 +174,8 @@ void ArvoreBinaria::Caminha(int tipo){
         break;
     }
 }
+
+// Retorna se a árvore está vazia
+bool ArvoreBinaria::Vazia(){
+    return this->raiz == nullptr;
+}

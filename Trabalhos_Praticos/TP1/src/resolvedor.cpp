@@ -3,7 +3,6 @@
 // Inicializa a expressão com uma árvore vazia
 Resolvedor::Resolvedor(){
     this->arvore = new ArvoreBinaria();
-    this->tipoExpressao = 0;
 }
 
 // Destrutor da expressão
@@ -22,55 +21,70 @@ bool Resolvedor::validarExpressao(std::string expressao){
         if(expressao[i] != ' ' && expressao[i] != '(' && expressao[i] != ')' && expressao[i] != '+' && expressao[i] != '-' && expressao[i] != '*' && expressao[i] != '/' && expressao[i] != '.' && (expressao[i] < '0' || expressao[i] > '9')){
             return false;
         }
-        if((expressao[i] == '(' || expressao[i] == ')') && tipoExpressao == 0){
-            tipoExpressao = 1;
-        }
     }
+
     // Verifica se a expressão tem o mesmo número de parênteses
-    if(tipoExpressao == 1){
-        int parenteses = 0;
-        for(int i = 0; i < len; i++){
-            // Verifica se o caractere é válido
-            if(expressao[i] == '('){
-                parenteses++;
-            }
-            else if(expressao[i] == ')'){
-                parenteses--;
-            }
-            if(parenteses < 0){
-                return false;
-            }
+    int parenteses = 0;
+    for(int i = 0; i < len; i++){
+        // Verifica se o caractere é válido
+        if(expressao[i] == '('){
+            parenteses++;
         }
-        if(parenteses != 0){
+        else if(expressao[i] == ')'){
+            parenteses--;
+        }
+        if(parenteses < 0){
             return false;
         }
     }
+    if(parenteses != 0){
+         return false;
+    }
+    
     return true;
 }
 
 // Lê uma expressão e a armazena na árvore
 // Entrada: expressão
 // Saída: void
-void Resolvedor::lerExpressao(std::string expressao){
+void Resolvedor::lerExpressao(std::string expressao, int tipoExpressao){
     // Verifica se a expressão é válida
     if(!this->validarExpressao(expressao)){
-        std::cout << "Expressão inválida" << std::endl;
+        std::cout << "ERRO: EXP NAO VALIDA" << std::endl;
         return;
     }
     // Limpa a árvore
     this->arvore->Limpa();
 
     // Insere a expressão na árvore
-    if(tipoExpressao == 1)
+    switch (tipoExpressao)
+    {
+    case 1:
         this->arvore->InsereInfixa(expressao);
-    else
+        std::cout << "EXPRESSAO OK: ";
+        this->arvore->Caminha(2);
+        std::cout << std::endl;
+        break;
+    case 2:
         this->arvore->InserePosfixa(expressao);
-
+        std::cout << "EXPRESSAO OK: ";
+        this->arvore->Caminha(3);
+        std::cout << std::endl;
+        break;
+    default:
+        break;
+    }
 }
 
 // Converte uma expressão posfixa para uma expressão infixa
 // Caminha pela arvore usando um algoritmo de caminhamento em ordem
 void Resolvedor::converteInfixa(){
+    // Verifica se a árvore está vazia
+    if(this->arvore->Vazia()){
+        std::cout << "ERRO: EXP NAO EXISTE" << std::endl;
+        return;
+    }
+    std::cout << "INFIXA: ";
     this->arvore->Caminha(2);
     std::cout << std::endl;
 }
@@ -78,14 +92,27 @@ void Resolvedor::converteInfixa(){
 // Converte uma expressão infixa para uma expressão posfixa
 // Caminha pela arvore usando um algoritmo de caminhamento em pós-ordem
 void Resolvedor::convertePosfixa(){
+    // Verifica se a árvore está vazia
+    if(this->arvore->Vazia()){
+        std::cout << "ERRO: EXP NAO EXISTE" << std::endl;
+        return;
+    }
+    std::cout << "POSFIXA: ";
     this->arvore->Caminha(3);
     std::cout << std::endl;
 }
 
 // Resolve a expressão
 void Resolvedor::resolverExpressao(){
+    // Verifica se a árvore está vazia
+    if(this->arvore->Vazia()){
+        std::cout << "ERRO: EXP NAO EXISTE" << std::endl;
+        return;
+    }
+    // Cria uma pilha para armazenar o resultado
     this->resultado = new PilhaFloat();
     this->resolveRecursivo(this->arvore->raiz);
+    std::cout << "VAL: ";
     std::cout << this->resultado->GetTopo() << std::endl;
 }
 
@@ -111,10 +138,14 @@ void Resolvedor::resolveRecursivo(TipoNo* p){
                 this->resultado->Empilha(x2 * x1);
             }
             else if(p->item == "/"){
-                if(x1 != 0)
+                if(x1 != 0){
                     this->resultado->Empilha(x2 / x1);
-                else
-                    std::cout << "Divisão por 0" << std::endl;
+                }
+                else{
+                    std::cout << "ERRO: DIVISAO POR ZERO" << std::endl;
+                    this->resultado->Empilha(0);
+                    return;
+                }
             }
         }
         // Verifica se o nó é um operando

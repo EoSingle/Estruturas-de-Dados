@@ -9,14 +9,13 @@
 class Resolvedor {
     private:
         ArvoreBinaria *arvore;
-        int tipoExpressao;
         PilhaFloat *resultado;
 
     public:
         Resolvedor();
         ~Resolvedor();
         bool validarExpressao(std::string expressao);
-        void lerExpressao(std::string expressao);
+        void lerExpressao(std::string expressao, int tipoExpressao);
         void converteInfixa();
         void convertePosfixa();
         void resolverExpressao();

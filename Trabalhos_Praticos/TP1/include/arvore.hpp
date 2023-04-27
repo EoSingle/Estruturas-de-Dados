@@ -21,6 +21,7 @@ class ArvoreBinaria {
         void InserePosfixa(std::string item);
         void Caminha(int tipo);
         void Limpa();
+        bool Vazia();
 
     friend class Resolvedor;
 };
