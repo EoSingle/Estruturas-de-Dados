@@ -13,35 +13,119 @@ Resolvedor::~Resolvedor(){
 // Verifica se a expressão é válida
 // Entrada: expressão
 // Saída: true se a expressão é válida, false caso contrário
-bool Resolvedor::validarExpressao(std::string expressao){
+bool Resolvedor::validarExpressao(std::string expressao, int tipoExpressao){
     // Verifica se a expressão é válida
-    int len = expressao.length();
-    for(int i = 0; i < len; i++){
-        // Verifica se o caractere é válido
-        if(expressao[i] != ' ' && expressao[i] != '(' && expressao[i] != ')' && expressao[i] != '+' && expressao[i] != '-' && expressao[i] != '*' && expressao[i] != '/' && expressao[i] != '.' && (expressao[i] < '0' || expressao[i] > '9')){
-            return false;
-        }
-    }
+    switch(tipoExpressao){
+        case 1: {
+            int len = expressao.length();
+            for(int i = 0; i < len; i++){
+                // Verifica se o caractere é válido
+                if(expressao[i] != ' ' && expressao[i] != '(' && expressao[i] != ')' && expressao[i] != '+' && expressao[i] != '-' && expressao[i] != '*' && expressao[i] != '/' && expressao[i] != '.' && (expressao[i] < '0' || expressao[i] > '9')){
+                    return false;
+                }
+            }
 
-    // Verifica se a expressão tem o mesmo número de parênteses
-    int parenteses = 0;
-    for(int i = 0; i < len; i++){
-        // Verifica se o caractere é válido
-        if(expressao[i] == '('){
-            parenteses++;
+            // Verifica se a expressão tem o mesmo número de parênteses
+            int parenteses = 0;
+            for(int i = 0; i < len; i++){
+                // Conta o número de parênteses
+                if(expressao[i] == '('){
+                    parenteses++;
+                }
+                else if(expressao[i] == ')'){
+                    parenteses--;
+                }
+                if(parenteses < 0){
+                    return false;
+                }
+            }
+            if(parenteses != 0){
+                return false;
+            }
+
+            // Verifica se a expressão tem um operador entre dois operandos
+            bool operador = false;
+            for(int i = 0; i < len; i++){
+                if(expressao[i] == '+' || expressao[i] == '-' || expressao[i] == '*' || expressao[i] == '/'){
+                    if(operador){
+                        return false;
+                    }
+                    operador = true;
+                }
+                else if(expressao[i] >= '0' && expressao[i] <= '9'){
+                    operador = false;
+                }
+            }
+
+            // Verifica se a expressão tem operadores suficientes
+            int operadores = 0;
+            int operandos = 0;
+
+            for(int i = 0; i < len; i++){
+                // Divide a expressão
+                std::string aux = "";
+                while(expressao[i] != ' '){
+                    aux += expressao[i];
+                    if(aux == "(" || aux ==")")
+                        break;
+                    i++;
+                }
+                // Conta os operadores e operandos
+                if(aux == "+" || aux == "-" || aux == "*" || aux == "/"){
+                    operadores++;
+                }
+                else if(aux >= "0" && aux <= "9.99"){
+                    operandos++;
+                }
+            }
+            
+            if(operadores != operandos - 1){
+                return false;
+            }
+
+            break;
         }
-        else if(expressao[i] == ')'){
-            parenteses--;
+        case 2: {
+            int len = expressao.length();
+            for(int i = 0; i < len; i++){
+                // Verifica se o caractere é válido
+                if(expressao[i] != ' ' && expressao[i] != '+' && expressao[i] != '-' && expressao[i] != '*' && expressao[i] != '/' && expressao[i] != '.' && (expressao[i] < '0' || expressao[i] > '9')){
+                    return false;
+                }
+            }
+
+            // Verifica se a expressão tem operadores suficientes
+            int operadores = 0; 
+            int operandos = 0;
+
+            for(int i = 0; i < len; i++){
+                // Divide a expressão
+                std::string aux = "";
+                while(expressao[i] != ' ' && i < len){
+                    aux += expressao[i];
+                    i++;
+                }
+                // Conta os operadores e operandos
+                if(aux == "+" || aux == "-" || aux == "*" || aux == "/"){
+                    operadores++;
+                }
+                else if(aux >= "0" && aux <= "9.99"){
+                    operandos++;
+                }
+            }
+
+            if(operadores != operandos - 1){
+                return false;
+            }
+
+            break;
         }
-        if(parenteses < 0){
-            return false;
-        }
+        default:
+            break;
+        
     }
-    if(parenteses != 0){
-         return false;
-    }
-    
     return true;
+
 }
 
 // Lê uma expressão e a armazena na árvore
@@ -49,10 +133,11 @@ bool Resolvedor::validarExpressao(std::string expressao){
 // Saída: void
 void Resolvedor::lerExpressao(std::string expressao, int tipoExpressao){
     // Verifica se a expressão é válida
-    if(!this->validarExpressao(expressao)){
+    if(!this->validarExpressao(expressao, tipoExpressao)){
         std::cout << "ERRO: EXP NAO VALIDA" << std::endl;
         return;
     }
+
     // Limpa a árvore
     this->arvore->Limpa();
 
@@ -120,7 +205,7 @@ void Resolvedor::resolverExpressao(){
 void Resolvedor::resolveRecursivo(TipoNo* p){
 
     if(p != nullptr){
-        // Resolve a expressão recursivamente
+        // Percorre a expressão recursivamente em pós-ordem
         this->resolveRecursivo(p->esq);
         this->resolveRecursivo(p->dir);
         // Verifica se o nó é um operador

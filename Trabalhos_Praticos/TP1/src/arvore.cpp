@@ -107,7 +107,7 @@ void ArvoreBinaria::InserePosfixa(std::string item){
         }
     }
 
-    // Atribui a arvore resultante em à raiz da árvore
+    // Atribui a árvore resultante à raiz da árvore
     this->raiz = nodes->Desempilha();
 
     delete nodes;

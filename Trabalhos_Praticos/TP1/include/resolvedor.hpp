@@ -14,7 +14,7 @@ class Resolvedor {
     public:
         Resolvedor();
         ~Resolvedor();
-        bool validarExpressao(std::string expressao);
+        bool validarExpressao(std::string expressao, int tipoExpressao);
         void lerExpressao(std::string expressao, int tipoExpressao);
         void converteInfixa();
         void convertePosfixa();
