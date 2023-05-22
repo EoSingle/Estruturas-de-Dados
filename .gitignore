@@ -4,3 +4,5 @@
 programa
 # Ignorar pasta .vscode
 .vscode
+# Ignorar .json
+*.json
