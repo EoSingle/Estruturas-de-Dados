@@ -30,5 +30,6 @@ class Graham {
         ~Graham();
 
         void convexHull(Ponto pontos[], int n, int type);
+        bool isInvalid();
         void printPilha();
 };

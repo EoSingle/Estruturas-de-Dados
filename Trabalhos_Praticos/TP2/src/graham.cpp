@@ -281,3 +281,8 @@ void Graham::convexHull(Ponto pontos[], int n, int type){
 void Graham::printPilha(){
     vertices.Imprime();
 }
+
+// Testa se o conjunto de pontos é válido
+bool Graham::isInvalid(){
+    return vertices.Vazia();
+}

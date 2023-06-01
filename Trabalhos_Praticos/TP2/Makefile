@@ -37,4 +37,4 @@ clean:
 run: all
 	${BIN_DIR}/${TARGET}
 
-teste: clean run
+teste: clean all

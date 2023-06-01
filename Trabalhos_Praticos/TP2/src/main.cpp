@@ -1,3 +1,5 @@
+// TODO: Criar uma exceção para um erro de leitura das linhas do arquivo de entrada
+
 #include "graham.hpp"
 #include "jarvis.hpp"
 #include "ponto.hpp"
@@ -39,9 +41,12 @@ int main(int argc, char *argv[]){
         return 1;
     }
 
-    std::cout << "FECHO CONVEXO:\n";
-
     graham.convexHull(points, n, 2);
+    if(graham.isInvalid()){
+        std::cout << "Pontos inválidos\n";
+        return 1;
+    }
+    std::cout << "FECHO CONVEXO:\n";
     graham.printPilha();
 
     auto start = std::chrono::high_resolution_clock::now();
