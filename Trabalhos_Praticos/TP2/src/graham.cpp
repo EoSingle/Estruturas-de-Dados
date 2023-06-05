@@ -33,7 +33,6 @@ int Graham::distSq(Ponto p1, Ponto p2)
 
 // Compara dois pontos
 //  1 --> p1 é maior que p2
-//  0 --> p1 é igual a p2
 // -1 --> p1 é menor que p2
 int Graham::compare(const void *vp1, const void *vp2)
 {

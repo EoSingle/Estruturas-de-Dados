@@ -35,6 +35,6 @@ clean:
 	rm -f ${BIN_DIR}/${TARGET}
 
 run: all
-	${BIN_DIR}/${TARGET}
+	${BIN_DIR}/${TARGET} 
 
-teste: clean all
+teste: clean run

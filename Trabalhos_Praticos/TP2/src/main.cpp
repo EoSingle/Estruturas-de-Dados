@@ -8,7 +8,6 @@
 #include <fstream>
 #include <chrono>
 #include <iomanip>
-#include <thread>
 
 const int MAX = 100000;
 
@@ -51,39 +50,35 @@ int main(int argc, char *argv[]){
 
     auto start = std::chrono::high_resolution_clock::now();
     graham.convexHull(points, n, 1);
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
     double tempo = duration.count() * 1e-9; 
 
-    std::cout << "GRAHAM+MERGESORT: " << std::fixed << std::setprecision(3) << tempo << "s\n";
+    std::cout << "GRAHAM+MERGESORT: " << std::fixed << std::setprecision(6) << tempo << "s\n";
 
     start = std::chrono::high_resolution_clock::now();
     graham.convexHull(points, n, 2);
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     end = std::chrono::high_resolution_clock::now();
     duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
     tempo = duration.count() * 1e-9;
 
-    std::cout << "GRAHAM+INSERTIONSORT: " << std::fixed << std::setprecision(3) << tempo << "s\n";
+    std::cout << "GRAHAM+INSERTIONSORT: " << std::fixed << std::setprecision(6) << tempo << "s\n";
 
     start = std::chrono::high_resolution_clock::now();
     graham.convexHull(points, n, 3);
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     end = std::chrono::high_resolution_clock::now();
     duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
     tempo = duration.count() * 1e-9;
 
-    std::cout << "GRAHAM+BUCKETSORT: " << std::fixed << std::setprecision(3) << tempo << "s\n";
+    std::cout << "GRAHAM+BUCKETSORT: " << std::fixed << std::setprecision(6) << tempo << "s\n";
 
     start = std::chrono::high_resolution_clock::now();
     jarvis.convexHull(points, n);
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     end = std::chrono::high_resolution_clock::now();
     duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
     tempo = duration.count() * 1e-9;
 
-    std::cout << "JARVIS: " << std::fixed << std::setprecision(3) << tempo << "s\n";
+    std::cout << "JARVIS: " << std::fixed << std::setprecision(6) << tempo << "s\n";
 
     return 0;
 }
