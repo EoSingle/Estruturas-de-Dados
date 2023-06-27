@@ -1,1 +1,3 @@
-Isso e um teste
+Estou testando o funcionamento do programa
+Quero saber se ele funciona corretamente ao se utilizar quebras de linha
+Será que o programa continua funcionando normalmente ao se utilizar pontuação?

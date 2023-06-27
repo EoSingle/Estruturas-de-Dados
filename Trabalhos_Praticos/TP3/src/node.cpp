@@ -5,6 +5,7 @@ Node::Node(){
     this->frequency = 0;
     this->left = nullptr;
     this->right = nullptr;
+    this->next = nullptr;
 }
 
 Node::Node(char character, int frequency){
@@ -12,6 +13,7 @@ Node::Node(char character, int frequency){
     this->frequency = frequency;
     this->left = nullptr;
     this->right = nullptr;
+    this->next = nullptr;
 }
 
 Node::Node(Node *left, Node *right){
@@ -19,11 +21,13 @@ Node::Node(Node *left, Node *right){
     this->frequency = left->frequency + right->frequency;
     this->left = left;
     this->right = right;
+    this->next = nullptr;
 }
 
 Node::~Node(){
     this->left = nullptr;
     this->right = nullptr;
+    this->next = nullptr;
 }
 
 char Node::getCharacter(){
@@ -42,6 +46,10 @@ Node *Node::getRight(){
     return this->right;
 }
 
+void Node::setNext(Node *next){
+    this->next = next;
+}
+
 void Node::setCharacter(char character){
     this->character = character;
 }
@@ -56,4 +64,8 @@ void Node::setLeft(Node *left){
 
 void Node::setRight(Node *right){
     this->right = right;
+}
+
+Node *Node::getNext(){
+    return this->next;
 }

@@ -24,11 +24,8 @@ ${OBJ_DIR}/tree.o: ${OBJ_DIR}/node.o
 ${OBJ_DIR}/node.o:
 	${CC} ${CFLAGS} -I${INCLUDE_DIR} -c ${SRC_DIR}/node.cpp -o ${OBJ_DIR}/node.o
 
-${OBJ_DIR}/queue.o: ${OBJ_DIR}/nodeQ.o
+${OBJ_DIR}/queue.o: ${OBJ_DIR}/node.o
 	${CC} ${CFLAGS} -I${INCLUDE_DIR} -c ${SRC_DIR}/queue.cpp -o ${OBJ_DIR}/queue.o
-
-${OBJ_DIR}/nodeQ.o: ${OBJ_DIR}/node.o
-	${CC} ${CFLAGS} -I${INCLUDE_DIR} -c ${SRC_DIR}/nodeQ.cpp -o ${OBJ_DIR}/nodeQ.o
 
 clean:
 	rm -f ${OBJ_DIR}/*.o

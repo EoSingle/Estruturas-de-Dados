@@ -1,30 +1,27 @@
 #pragma once
 
-#include "nodeQ.hpp"
+#include "node.hpp"
+#include <iostream>
 
 // Fila de prioridade mínima
 class Queue{
     private:
-        NodeQ *head;
-        NodeQ *tail;
-
+        Node *head;
         int size;
 
     public:
         Queue();
         ~Queue();
 
-        NodeQ *getHead();
-        NodeQ *getTail();
-        NodeQ *getNode(char character);
+        Node *getHead();
         int getSize();
 
-        void setHead(NodeQ *head);
-        void setTail(NodeQ *tail);
+        void setHead(Node *head);
 
-        void push(char character);
         void push(Node *node);
-        NodeQ *pop();
+        Node *pop();
+
+        void print();
 
         bool isEmpty();
         void clear();

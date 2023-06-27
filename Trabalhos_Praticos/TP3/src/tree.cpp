@@ -19,14 +19,29 @@ void Tree::setRoot(Node *root){
 // Contrói a árvore de Huffman a partir de uma fila de prioridade.
 void Tree::build(Queue &queue){
     while(queue.getSize() > 1){
-        Node *left = queue.pop()->getNode();
-        Node *right = queue.pop()->getNode();
-        Node *parent = new Node(left, right);
+        Node *left = queue.pop();
+        Node *right = queue.pop();
+        Node *parent = new Node('\0', left->getFrequency() + right->getFrequency());
+        parent->setLeft(left);
+        parent->setRight(right);
         queue.push(parent);
     }
+    this->root = queue.pop();
+}
 
-    // Define a raiz da árvore.
-    this->root = queue.pop()->getNode();
+// Retorna a altura da árvore.
+int Tree::getHeight(Node *node){
+    if(node == nullptr){
+        return -1;
+    }else{
+        int left = this->getHeight(node->getLeft());
+        int right = this->getHeight(node->getRight());
+        if(left > right){
+            return left + 1;
+        }else{
+            return right + 1;
+        }
+    }
 }
 
 // Imprime a árvore de Huffman.
@@ -34,13 +49,18 @@ void Tree::print(Node *node){
     this->print(node, 0);
 }
 
+// Função auxiliar para imprimir a árvore de Huffman.
 void Tree::print(Node *node, int level){
     if(node != nullptr){
         this->print(node->getRight(), level + 1);
         for(int i = 0; i < level; i++){
-            std::cout << "   ";
+            std::cout << "    ";
         }
-        std::cout << node->getCharacter() << std::endl;
+        if(node->getCharacter() == '\0'){
+            std::cout << "*" << std::endl;
+        }else{
+            std::cout << node->getCharacter() << std::endl;
+        }
         this->print(node->getLeft(), level + 1);
     }
 }
@@ -56,24 +76,6 @@ void Tree::print(Node *node, std::ofstream &output){
             output << node->getCharacter();
         }
     }
-}
-
-// Codifica um caractere e grava no arquivo de saída.
-void Tree::encode(char character, std::ofstream &output){
-    Node *node = this->root;
-    std::string code = "";
-    while(node->getCharacter() != character){
-        if(node->getLeft()->getCharacter() == character){
-            node = node->getLeft();
-            code += "0";
-        }else if(node->getRight()->getCharacter() == character){
-            node = node->getRight();
-            code += "1";
-        }else{
-            continue;
-        }
-    }
-    output << code;
 }
 
 bool Tree::isEmpty(){
