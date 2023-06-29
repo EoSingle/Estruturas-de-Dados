@@ -20,8 +20,8 @@ void Huffman::compress(std::ifstream &file, std::ofstream &output){
         this->table[(unsigned char)character]++;
     }
 
-    std::cout << "Tabela de frequência:" << std::endl;
-    this->printTable();
+    //std::cout << "Tabela de frequência:" << std::endl;
+    //this->printTable();
 
     // Insere os caracteres na fila de prioridade.
     for(int i = 0; i < TAM; i++){
@@ -31,16 +31,18 @@ void Huffman::compress(std::ifstream &file, std::ofstream &output){
         }
     }
 
-    std::cout << "Fila de prioridade:" << std::endl;
-    this->queue->print();
+    //std::cout << "Fila de prioridade:" << std::endl;
+    //this->queue->print();
 
     // Cria a árvore de Huffman a partir da fila de prioridade.
     this->tree->build(*this->queue);
-    // Grava o cabeçalho no arquivo de saída.
-    //this->tree->print(this->tree->getRoot(), output);
 
-    std::cout << "Árvore de Huffman:" << std::endl;
-    this->tree->print(this->tree->getRoot());
+    //std::cout << "Árvore de Huffman:" << std::endl;
+    //this->tree->print(this->tree->getRoot());
+
+    // Grava o cabeçalho no arquivo de saída.
+    this->tree->print(this->tree->getRoot(), output);
+    output << std::endl;
 
     // Cria o dicionário de Huffman.
     int columns = this->tree->getHeight(this->tree->getRoot()) + 1;
@@ -49,22 +51,60 @@ void Huffman::compress(std::ifstream &file, std::ofstream &output){
     code[0] = '\0';
     this->buildDict(this->tree->getRoot(), dict, columns, code);
 
-    std::cout << "Dicionário de Huffman:" << std::endl;
-    this->printDict(dict);
-
+    //std::cout << "Dicionário de Huffman:" << std::endl;
+    //this->printDict(dict);
     
-    // Codifica o arquivo de entrada e grava no arquivo de saída.
+    // Codifica o arquivo de entrada e grava em uma string.
+    std::string buffer;
     file.clear();
     file.seekg(0, std::ios::beg);
     while(file.get(character)){
-        output << dict[(unsigned char)character];
+        buffer += dict[(unsigned char)character];
+    }
+
+    // Grava a string no arquivo de saída.
+    int size = buffer.size();
+    for(int i = 0; i < size; i += 8){
+        char byte = 0;
+        for(int j = 0; j < 8; j++){
+            if(i + j < size){
+                byte <<= 1;
+                byte |= buffer[i + j] - '0';
+            }else{
+                byte <<= 1;
+            }
+        }
+        output << byte;
     }
     
     // Libera a memória alocada.
     this->clearDict(dict);
 }
 
-void Huffman::decompress(std::ifstream &file, std::ofstream &output){}
+void Huffman::decompress(std::ifstream &file, std::ofstream &output){
+    // Lê o cabeçalho do arquivo de entrada e cria a árvore de Huffman.
+    this->tree->build(file);
+
+    //std::cout << "Árvore de Huffman:" << std::endl;
+    //this->tree->print(this->tree->getRoot());
+
+    // Decodifica o arquivo de entrada e grava no arquivo de saída.
+    Node *node = this->tree->getRoot();
+    char character;
+    while(file.get(character)){
+        for(int i = 7; i >= 0; i--){
+            if((character >> i) & 1){
+                node = node->getRight();
+            }else{
+                node = node->getLeft();
+            }
+            if(node->getLeft() == nullptr && node->getRight() == nullptr){
+                output << node->getCharacter();
+                node = this->tree->getRoot();
+            }
+        }
+    }    
+}
 
 char** Huffman::allocDict(int columns){
     char **dict = new char*[TAM];

@@ -1,5 +1,3 @@
-#include "node.hpp"
-#include "tree.hpp"
 #include "huffman.hpp"
 
 #include <iostream>

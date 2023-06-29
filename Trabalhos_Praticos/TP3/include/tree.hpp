@@ -2,6 +2,7 @@
 
 #include "node.hpp"
 #include "queue.hpp"
+#include "stack.hpp"
 #include <fstream>
 #include <iostream>
 
@@ -21,6 +22,9 @@ class Tree{
 
         // Cria a árvore a partir de um arquivo de texto.
         void build(Queue &queue);
+
+        // Monta a árvore a partir do cabeçalho do arquivo de entrada.
+        void build(std::ifstream &input);
 
         // Retorna a altura da árvore.
         int getHeight(Node *node);

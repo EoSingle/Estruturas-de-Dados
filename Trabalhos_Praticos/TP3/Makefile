@@ -18,7 +18,7 @@ ${OBJ_DIR}/main.o: ${OBJ_DIR}/huffman.o
 ${OBJ_DIR}/huffman.o: ${OBJ_DIR}/tree.o ${OBJ_DIR}/queue.o
 	${CC} ${CFLAGS} -I${INCLUDE_DIR} -c ${SRC_DIR}/huffman.cpp -o ${OBJ_DIR}/huffman.o
 
-${OBJ_DIR}/tree.o: ${OBJ_DIR}/node.o
+${OBJ_DIR}/tree.o: ${OBJ_DIR}/node.o ${OBJ_DIR}/stack.o
 	${CC} ${CFLAGS} -I${INCLUDE_DIR} -c ${SRC_DIR}/tree.cpp -o ${OBJ_DIR}/tree.o
 
 ${OBJ_DIR}/node.o:
@@ -27,6 +27,9 @@ ${OBJ_DIR}/node.o:
 ${OBJ_DIR}/queue.o: ${OBJ_DIR}/node.o
 	${CC} ${CFLAGS} -I${INCLUDE_DIR} -c ${SRC_DIR}/queue.cpp -o ${OBJ_DIR}/queue.o
 
+${OBJ_DIR}/stack.o: ${OBJ_DIR}/node.o
+	${CC} ${CFLAGS} -I${INCLUDE_DIR} -c ${SRC_DIR}/stack.cpp -o ${OBJ_DIR}/stack.o
+
 clean:
 	rm -f ${OBJ_DIR}/*.o
 	rm -f ${BIN_DIR}/${TARGET}
@@ -34,5 +37,6 @@ clean:
 run: all
 	${BIN_DIR}/${TARGET} 
 
-teste: clean all
+teste: 
 	${BIN_DIR}/${TARGET} -c test/input.txt test/output.bin
+	${BIN_DIR}/${TARGET} -d test/output.bin test/output.txt

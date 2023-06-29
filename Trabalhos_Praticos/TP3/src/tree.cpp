@@ -29,6 +29,32 @@ void Tree::build(Queue &queue){
     this->root = queue.pop();
 }
 
+// Contrói a árvore de Huffman a partir do cabeçalho do arquivo de entrada.
+void Tree::build(std::ifstream &input){
+    Stack stack;
+    // Percorre a primeira linha do arquivo de entrada.
+    while(input.peek() != '\n'){
+        char character;
+        input.get(character);
+        if(character == (char)1){
+            Node *right = stack.pop();
+            Node *left = stack.pop();
+            Node *parent = new Node('\0', 0);
+            parent->setLeft(left);
+            parent->setRight(right);
+            stack.push(parent);
+        }else if(character == (char)2){
+            Node *node = new Node('\n', 0);
+            stack.push(node);
+        }else{
+            Node *node = new Node(character, 0);
+            stack.push(node);
+        }
+    }
+    this->root = stack.pop();
+    input.get();
+}
+
 // Retorna a altura da árvore.
 int Tree::getHeight(Node *node){
     if(node == nullptr){
@@ -71,7 +97,10 @@ void Tree::print(Node *node, std::ofstream &output){
         this->print(node->getLeft(), output);
         this->print(node->getRight(), output);
         if(node->getCharacter() == '\0'){
-            output << "$";
+            output << (char)1;
+        }
+        else if(node->getCharacter() == '\n'){
+            output << (char)2;
         }else{
             output << node->getCharacter();
         }
