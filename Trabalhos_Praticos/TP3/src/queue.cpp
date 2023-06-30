@@ -21,7 +21,6 @@ void Queue::setHead(Node *head){
     this->head = head;
 }
 
-// Insere um nó na fila de prioridade mínima.
 void Queue::push(Node *node){
     if(this->isEmpty()){
         this->head = node;

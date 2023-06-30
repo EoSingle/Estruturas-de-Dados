@@ -6,18 +6,23 @@
 #include <fstream>
 #include <iostream>
 
+// Classe que implementa a árvore de Huffman.
 class Tree{
     private:
         Node *root;
 
-        // Limpa a árvore recursivamente.
+        // Método auxiliar para limpar a árvore.
         void clear(Node *node);
 
     public:
+        // Construtor
         Tree();
+        // Destrutor
         ~Tree();
 
+        // Retorna a raiz da árvore.
         Node *getRoot();
+        // Define a raiz da árvore.
         void setRoot(Node *root);
 
         // Cria a árvore a partir de um arquivo de texto.
@@ -31,11 +36,14 @@ class Tree{
 
         // Imprime a árvore
         void print(Node *node);
+        // Método auxiliar para imprimir a árvore.
         void print(Node *node, int level);
 
         // Imprime a árvore no cabeçalho do arquivo de saída.
         void print(Node *node, std::ofstream &output);
 
+        // Retorna se a árvore está vazia.
         bool isEmpty();
+        // Limpa a árvore.
         void clear();
 };

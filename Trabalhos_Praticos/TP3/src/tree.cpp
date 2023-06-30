@@ -16,7 +16,6 @@ void Tree::setRoot(Node *root){
     this->root = root;
 }
 
-// Contrói a árvore de Huffman a partir de uma fila de prioridade.
 void Tree::build(Queue &queue){
     while(queue.getSize() > 1){
         Node *left = queue.pop();
@@ -29,10 +28,8 @@ void Tree::build(Queue &queue){
     this->root = queue.pop();
 }
 
-// Contrói a árvore de Huffman a partir do cabeçalho do arquivo de entrada.
 void Tree::build(std::ifstream &input){
     Stack stack;
-    // Percorre a primeira linha do arquivo de entrada.
     while(input.peek() != '\n'){
         char character;
         input.get(character);
@@ -55,7 +52,6 @@ void Tree::build(std::ifstream &input){
     input.get();
 }
 
-// Retorna a altura da árvore.
 int Tree::getHeight(Node *node){
     if(node == nullptr){
         return -1;
@@ -70,12 +66,10 @@ int Tree::getHeight(Node *node){
     }
 }
 
-// Imprime a árvore de Huffman.
 void Tree::print(Node *node){
     this->print(node, 0);
 }
 
-// Função auxiliar para imprimir a árvore de Huffman.
 void Tree::print(Node *node, int level){
     if(node != nullptr){
         this->print(node->getRight(), level + 1);
@@ -91,7 +85,6 @@ void Tree::print(Node *node, int level){
     }
 }
 
-// Grava a árvore de Huffman no arquivo de saída.
 void Tree::print(Node *node, std::ofstream &output){
     if(node != nullptr){
         this->print(node->getLeft(), output);

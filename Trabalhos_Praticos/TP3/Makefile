@@ -35,8 +35,8 @@ clean:
 	rm -f ${BIN_DIR}/${TARGET}
 
 run: all
-	${BIN_DIR}/${TARGET} 
+	${BIN_DIR}/${TARGET} -h
 
-teste: 
-	${BIN_DIR}/${TARGET} -c test/input.txt test/output.bin
-	${BIN_DIR}/${TARGET} -d test/output.bin test/output.txt
+teste: clean all
+	${BIN_DIR}/${TARGET} -c test/input.txt test/binario.txt
+	${BIN_DIR}/${TARGET} -d test/binario.txt test/output.txt

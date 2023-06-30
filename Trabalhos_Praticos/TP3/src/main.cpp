@@ -1,20 +1,9 @@
 #include "huffman.hpp"
-
 #include <iostream>
 #include <fstream>
 
-// O programa deve fazer duas coisas:
-// 1. Ler um arquivo de texto e gerar um arquivo binário do texto compactado pelo algoritmo de Huffman.
-// 2. Ler um arquivo binário criado pelo programa anteriormente e gerar o arquivo de texto original.
-//
-// O programa deve receber dois argumentos:
-// 1. O primeiro argumento deve ser o nome do arquivo de texto a ser compactado ou descompactado.
-// 2. O segundo argumento deve ser o nome do arquivo binário a ser gerado ou lido.
-//
-// Exemplo de execução:
-// ./tp3 -c texto.txt binario.bin
-// ./tp3 -d binario.bin texto.txt
-
+//#include <chrono>  // Para medir o tempo de execução
+//#include <iomanip> // Para formatar a saída do tempo de execução
 
 int main(int argc, char* argv[]){
     if(argc != 4){
@@ -22,9 +11,9 @@ int main(int argc, char* argv[]){
             std::cout << "Trabalho Prático 3 - Compactação de Arquivos de Texto" << std::endl;
             std::cout << "Lucas Albano Olive Cruz - 2022036209" << std::endl;
             std::cout << "Instruções do programa:" << std::endl;
-            std::cout << "-c <arquivo de texto> <arquivo binário> compacta o arquivo de texto e gera o arquivo binário" << std::endl;
-            std::cout << "-d <arquivo binário> <arquivo de texto> descompacta o arquivo binário e gera o arquivo de texto" << std::endl;
-            std::cout << "-h exibe as instruções do programa" << std::endl;
+            std::cout << "-c <arquivo de texto> <arquivo binário> // compacta o arquivo de texto para um arquivo binário" << std::endl;
+            std::cout << "-d <arquivo binário> <arquivo de texto> // descompacta o arquivo binário e remonta o arquivo de texto" << std::endl;
+            std::cout << "-h // exibe as instruções do programa" << std::endl;
             return 0;
         }
         std::cout << "ERRO: Número de argumentos inválido." << std::endl;
@@ -49,10 +38,29 @@ int main(int argc, char* argv[]){
             return 1;
         }
 
+        //auto start = std::chrono::high_resolution_clock::now();
         Huffman huffman;
         huffman.compress(file, binary);
+        //auto end = std::chrono::high_resolution_clock::now();
+
+        //std::cout<< "Arquivo compactado com sucesso." << std::endl << std::endl;
+        //std::cout << "Arquivo de entrada: " << input << std::endl;
+        //file.clear();
+        //std::cout << "Tamanho do arquivo de entrada: " << file.tellg() << " bytes" << std::endl << std::endl;
+
+        //std::cout << "Arquivo de saída: " << output << std::endl;
+        //std::cout << "Tamanho do arquivo de saída: " << binary.tellp() << " bytes" << std::endl << std::endl;
+
+        //std::cout << "Taxa de compressão: " << std::fixed << std::setprecision(2) << ( 1 - (double)binary.tellp() / file.tellg()) * 100 << "%" << std::endl;
+
         file.close();
         binary.close();
+
+        //auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
+        //double tempo = duration.count() * 1e-9;
+        //std::cout << std::endl;
+        //std::cout << "Tempo de execução: " << std::fixed << std::setprecision(6) << tempo << "s" << std::endl;
+
     }
     else if(option == "-d"){
         std::ifstream binary(input, std::ios::binary);
@@ -67,10 +75,22 @@ int main(int argc, char* argv[]){
             return 1;
         }
 
+        //auto start = std::chrono::high_resolution_clock::now();
         Huffman huffman;
         huffman.decompress(binary, file);
+        //auto end = std::chrono::high_resolution_clock::now();
+
+        //std::cout<< "Arquivo descompactado com sucesso." << std::endl << std::endl;
+
+        //std::cout << "Arquivo descompactado em: " << output << std::endl << std::endl;
+
         binary.close();
         file.close();
+
+        //auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
+        //double tempo = duration.count() * 1e-9;
+        //std::cout << "Tempo de execução: " << std::fixed << std::setprecision(6) << tempo << "s" << std::endl;
+    
     }
     else{
         std::cout << "ERRO: Opção inválida." << std::endl;
